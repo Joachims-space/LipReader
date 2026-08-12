@@ -17,3 +17,5 @@ Datei frontend/index.html im Browser öffnen.
 - Mundregion extrahieren
 - Trainingsvideos speichern
 - KI-Modell mit PyTorch trainieren
+# LipReader
+z.B. KI-gestützte Lippenlese-Webanwendung
