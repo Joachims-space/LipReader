@@ -35,12 +35,6 @@ with mp_face_mesh.FaceMesh(
         if results.multi_face_landmarks:
 
             for landmarks in results.multi_face_landmarks:
-
-                # drawing.draw_landmarks(
-                #     frame,
-                #     landmarks,
-                #     mp_face_mesh.FACEMESH_TESSELATION
-                # )
                 
                 h, w, _ = frame.shape
 
@@ -67,7 +61,6 @@ with mp_face_mesh.FaceMesh(
                 ymin = min(y_coords) - 20
                 ymax = max(y_coords) + 20
 
-
                 left_corner = landmarks.landmark[61]
                 right_corner = landmarks.landmark[291]
 
@@ -76,7 +69,6 @@ with mp_face_mesh.FaceMesh(
 
                 mouth_width = abs(right_corner.x - left_corner.x)
                 mouth_height = abs(lower_lip.y - upper_lip.y)
-
 
                 if not calibrated:
 
