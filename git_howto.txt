@@ -1,0 +1,20 @@
+Git-Status anzeigen:
+git status
+
+Änderungen vormerken:
+git add .
+
+Commit erstellen:
+git commit -m "Mundbereich erkannt"
+
+Auf GitHub hochladen:
+git push
+
+
+Nach jedem funktionierenden Meilenstein:
+
+git status
+git add .
+git commit -m "Kurze Beschreibung der Änderung"
+git push
+
