@@ -52,11 +52,21 @@ class UI:
 
         cv2.putText(
             frame,
-            f"Kalibrierung {current}/{total}",
+            "BITTE STILL HALTEN",
             (20, 40),
             cv2.FONT_HERSHEY_SIMPLEX,
             1,
             (0, 0, 255),
+            2
+        )
+
+        cv2.putText(
+            frame,
+            f"Kalibrierung: {current}/{total}",
+            (20, 80),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 255, 255),
             2
         )
 
@@ -81,3 +91,15 @@ class UI:
             "LipReader",
             frame
         )
+        
+    def show_calibration_hint(self, frame):
+
+        cv2.putText(
+            frame,
+            "Taste C zum Kalibrieren",
+            (20, 40),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (255, 255, 0),
+            2
+        )        

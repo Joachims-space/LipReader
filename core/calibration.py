@@ -27,6 +27,7 @@ class Calibration:
 
         self.width_threshold = 0
         self.height_threshold = 0
+        self.started = False
 
     def add_measurement(self, width, height):
 
@@ -93,3 +94,19 @@ class Calibration:
         )
 
         return width_changed or height_changed
+    
+    def start(self):
+        """
+        Startet die Kalibrierung.
+        """
+
+        self.started = True
+
+        self.width_values = []
+        self.height_values = []
+
+        self.calibrated = False    
+            
+    def is_started(self):
+
+        return self.started        

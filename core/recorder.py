@@ -51,7 +51,7 @@ class Recorder:
             filepath,
             cv2.VideoWriter_fourcc(*"mp4v"),
             20,
-            (width, height)
+            (128, 128) #(width, height)
         )
 
         self.recording = True
@@ -71,8 +71,13 @@ class Recorder:
 
         if self.recording:
 
+            resized = cv2.resize(
+                mouth_roi,
+                (128, 128)
+            )
+
             self.writer.write(
-                mouth_roi
+                resized
             )
 
     def stop_recording(self):

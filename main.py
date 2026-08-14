@@ -77,21 +77,35 @@ def main():
             )
             
             # Kalibrierung durchführen
-            if not calibration.is_calibrated():
+            if (
+                calibration.is_started()
+                and
+                not calibration.is_calibrated()
+            ):
+
                 calibration.add_measurement(
                     mouth_width,
                     mouth_height
-                )            
-            
-            # Mundbereich markieren
-            # cv2.rectangle(
-            #     frame,
-            #     (xmin, ymin),
-            #     (xmax, ymax),
-            #     (0, 255, 0),
-            #     2
-            # )
-            
+                )
+
+                current = len(
+                    calibration.width_values
+                )
+
+                total = calibration.calibration_frames
+
+                ui.show_calibration(
+                    frame,
+                    current,
+                    total
+                )   
+                
+            if not calibration.is_started():
+
+                ui.show_calibration_hint(
+                    frame
+                )
+                            
             ui.draw_mouth_rectangle(
                 frame,
                 xmin,
@@ -102,22 +116,24 @@ def main():
             
         if mouth_roi is not None and mouth_roi.size > 0:
             ui.show_lips(mouth_roi)     
-
-
-        if frame is None:
-            break
-
-        cv2.imshow("LipReader", frame)
+            
+            recorder.write_frame(
+                mouth_roi
+            )
+    
+        ui.show_main_window(frame)
 
         key = cv2.waitKey(1) & 0xFF
+        if key == ord("c"):
+            calibration.start()
+            print()
+            print("Kalibrierung gestartet")
+            print()
+    
         if key == ord("r"):
-
             if not recorder.recording:
-
                 if mouth_roi is not None and mouth_roi.size > 0:
-
                     height, width = mouth_roi.shape[:2]
-
                     recorder.start_recording(
                         width,
                         height
@@ -133,6 +149,7 @@ def main():
         if key == 27:
             break
 
+    recorder.stop_recording()    
     camera.release()
     cv2.destroyAllWindows()
 

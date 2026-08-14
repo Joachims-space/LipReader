@@ -17,7 +17,7 @@ class MouthDetector:
     def __init__(self):
 
         # Landmarken des Mundbereichs
-        
+        # https://github.com/google-ai-edge/mediapipe/wiki/MediaPipe-Face-Mesh
         # 61  = linker Mundwinkel
         # 291 = rechter Mundwinkel
         # 13 = Oberlippe Mitte
@@ -76,3 +76,27 @@ class MouthDetector:
         mouth_roi = frame[ymin:ymax, xmin:xmax]
 
         return mouth_roi, xmin, ymin, xmax, ymax
+    
+    def get_mouth_measurements(self, landmarks):
+        """
+        Ermittelt Mundbreite und Mundhöhe.
+
+        Returns:
+            width, height
+        """
+
+        left_corner = landmarks.landmark[61]
+        right_corner = landmarks.landmark[291]
+
+        upper_lip = landmarks.landmark[13]
+        lower_lip = landmarks.landmark[14]
+
+        width = abs(
+            right_corner.x - left_corner.x
+        )
+
+        height = abs(
+            lower_lip.y - upper_lip.y
+        )
+
+        return width, height    
