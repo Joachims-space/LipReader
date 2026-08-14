@@ -224,3 +224,56 @@ class UI:
             (0, 255, 0),
             2
         )        
+        
+        
+    def show_recording_count(
+        self,
+        frame,
+        count,
+        target_count=20
+    ):
+        """
+        Zeigt den Trainingsfortschritt an.
+
+        count:
+            Vorhandene Trainingsvideos
+
+        target_count:
+            Gewünschte Anzahl von Videos
+        """
+
+        cv2.putText(
+            frame,
+            f"Aufnahmen: {count}/{target_count}",
+            (20, 200),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.8,
+            (0, 255, 0),
+            2
+        )
+
+        if count < target_count:
+
+            status = (
+                "Weitere Trainingsdaten benoetigt"
+            )
+
+            color = (0, 255, 255)
+
+        else:
+
+            status = (
+                "Genuegend Trainingsdaten vorhanden"
+            )
+
+            color = (0, 255, 0)
+
+        cv2.putText(
+            frame,
+            status,
+            (20, 230),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.7,
+            color,
+            2
+        )
