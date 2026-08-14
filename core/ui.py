@@ -13,7 +13,7 @@ OpenCV-Darstellung.
 """
 
 import cv2
-
+from config.shortcuts import SHORTCUTS
 
 class UI:
 
@@ -134,40 +134,37 @@ class UI:
         )        
         
         
-    def show_shortcuts(self, frame):
+    def show_shortcuts(
+        self,
+        frame
+    ):
         """
-        Zeigt die verfügbaren Tastenkürzel an.
+        Zeigt alle verfügbaren
+        Tastenkürzel an.
         """
-
-        shortcuts = [
-
-            "C  Kalibrieren",
-
-            "R  Aufnahme Start/Stop",
-
-            "N  Naechster Satz",
-
-            "P  Vorheriger Satz",
-
-            "ESC Beenden"
-        ]
 
         start_x = 20
-        start_y = 250
+        start_y = 260
 
-        for index, text in enumerate(shortcuts):
+        for index, (
+            key,
+            description
+        ) in enumerate(
+            SHORTCUTS.items()
+        ):
 
             y = start_y + (index * 30)
 
             cv2.putText(
                 frame,
-                text,
+                f"{key}: {description}",
                 (start_x, y),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.7,
                 (200, 200, 200),
                 2
-            )        
+            )
+            
             
     def create_windows(self):
         """

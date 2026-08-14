@@ -8,7 +8,8 @@ aus den Python-Dateien des Projekts.
 
 from pathlib import Path
 import ast
-
+from config.shortcuts import SHORTCUTS
+from config.dataflow import DATAFLOW
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
@@ -67,6 +68,28 @@ def analyze_file(file_path):
     return result
 
 
+def add_dataflow(lines):
+    """
+    Fügt den Datenfluss der Anwendung
+    zur Dokumentation hinzu.
+    """
+
+    lines.append("\n# Datenfluss\n")
+
+    lines.append("```text")
+
+    for index, component in enumerate(
+        DATAFLOW
+    ):
+
+        lines.append(component)
+
+        if index < len(DATAFLOW) - 1:
+
+            lines.append("↓")
+
+    lines.append("```")
+    
 def build_markdown():
 
     lines = []
@@ -129,9 +152,135 @@ def build_markdown():
 
             lines.append("\n")
 
+
+    add_project_structure(lines)
+
+    add_training_sentences(lines)
+
+    add_shortcuts(lines)
+
+    add_dataflow(lines)
+
     return "\n".join(lines)
 
 
+def add_dataflow(lines):
+    """
+    Fügt den Datenfluss des Systems
+    zur Dokumentation hinzu.
+    """
+
+    lines.append("\n# Datenfluss\n")
+
+    try:
+
+        from config.dataflow import DATAFLOW
+
+        lines.append("```text")
+
+        for i, component in enumerate(DATAFLOW):
+
+            lines.append(component)
+
+            if i < len(DATAFLOW) - 1:
+                lines.append("↓")
+
+        lines.append("```")
+
+    except Exception as ex:
+
+        lines.append(
+            f"Fehler beim Laden des Datenflusses: {ex}"
+        )
+        
+
+def add_project_structure(lines):
+    """
+    Fügt einen Projektstrukturbaum
+    zur Dokumentation hinzu.
+    """
+
+    lines.append("\n# Projektstruktur\n")
+
+    lines.append("```text")
+
+    build_tree(
+        PROJECT_ROOT,
+        lines,
+        "",
+        ignore_dirs={
+            ".git",
+            "__pycache__",
+            ".venv",
+            ".pytest_cache",
+            ".mypy_cache"
+        }
+    )
+
+    lines.append("```")
+    
+    
+def build_tree(
+    path,
+    lines,
+    prefix,
+    ignore_dirs
+):
+    """
+    Erzeugt rekursiv einen
+    Verzeichnisbaum.
+    """
+
+    entries = sorted(
+        path.iterdir(),
+        key=lambda p: (
+            p.is_file(),
+            p.name.lower()
+        )
+    )
+
+    entries = [
+
+        entry
+
+        for entry in entries
+
+        if entry.name not in ignore_dirs
+    ]
+
+    total = len(entries)
+
+    for index, entry in enumerate(entries):
+
+        is_last = (
+            index == total - 1
+        )
+
+        branch = (
+            "└── "
+            if is_last
+            else "├── "
+        )
+
+        lines.append(
+            prefix + branch + entry.name
+        )
+
+        if entry.is_dir():
+
+            extension = (
+                "    "
+                if is_last
+                else "│   "
+            )
+
+            build_tree(
+                entry,
+                lines,
+                prefix + extension,
+                ignore_dirs
+            )
+                
 def main():
 
     OUTPUT_DIR.mkdir(
@@ -149,6 +298,53 @@ def main():
         f"Architektur erzeugt: {OUTPUT_FILE}"
     )
 
+def add_training_sentences(lines):
 
+    lines.append("\n# Trainingssätze\n")
+
+    try:
+
+        from core.training_manager import (
+            TrainingManager
+        )
+
+        manager = TrainingManager()
+
+        for sentence in manager.sentences:
+
+            lines.append(
+                f"- {sentence}"
+            )
+
+    except Exception as ex:
+
+        lines.append(
+            f"Fehler: {ex}"
+        )
+
+def add_shortcuts(lines):
+
+    lines.append("\n# Tastenkürzel\n")
+
+    try:
+
+        from config.shortcuts import (
+            SHORTCUTS
+        )
+
+        for key, description in (
+            SHORTCUTS.items()
+        ):
+
+            lines.append(
+                f"- {key}: {description}"
+            )
+
+    except Exception as ex:
+
+        lines.append(
+            f"Fehler: {ex}"
+        )
+        
 if __name__ == "__main__":
     main()
