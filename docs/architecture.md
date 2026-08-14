@@ -205,3 +205,80 @@ Später:
 - Recorder
 - KI-Modell
 
+
+
+# Projektstruktur
+
+```text
+├── backend
+│   ├── tests
+│   ├── main.py
+│   └── requirements.txt
+├── config
+│   ├── dataflow.py
+│   ├── settings.py
+│   └── shortcuts.py
+├── core
+│   ├── calibration.py
+│   ├── camera.py
+│   ├── face_detector.py
+│   ├── mouth_detector.py
+│   ├── recorder.py
+│   ├── training_manager.py
+│   └── ui.py
+├── dataset
+│   ├── bitte_hilfe
+│   ├── bitte_wasser
+│   └── raw
+├── docs
+│   └── architecture.md
+├── frontend
+│   ├── app.js
+│   ├── index.html
+│   └── style.css
+├── models
+├── tests
+│   └── test_mediapipe.py
+├── tools
+│   └── generate_architecture.py
+├── .gitignore
+├── git_howto.txt
+├── main.py
+├── README.md
+└── requirements.txt
+```
+
+# Trainingssätze
+
+- Bitte Wasser
+- Bitte Hilfe
+- Ich habe Schmerzen
+- Ja
+- Nein
+- Danke
+
+# Tastenkürzel
+
+- C: Kalibrieren
+- R: Aufnahme Start/Stop
+- N: Nächster Trainingssatz
+- P: Vorheriger Trainingssatz
+- ESC: Programm beenden
+
+# Datenfluss
+
+```text
+Camera
+↓
+FaceDetector
+↓
+MouthDetector
+↓
+Calibration
+↓
+TrainingManager
+↓
+Recorder
+↓
+UI
+```

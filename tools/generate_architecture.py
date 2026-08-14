@@ -5,13 +5,22 @@ docs/architecture.md
 
 aus den Python-Dateien des Projekts.
 """
-
 from pathlib import Path
 import ast
-from config.shortcuts import SHORTCUTS
-from config.dataflow import DATAFLOW
+import sys
+
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+# Projektwurzel zum Python-Pfad hinzufügen,
+# damit Imports wie
+# from config.shortcuts import SHORTCUTS
+# funktionieren.
+sys.path.insert(
+    0,
+    str(PROJECT_ROOT)
+)
+from config.shortcuts import SHORTCUTS
+from config.dataflow import DATAFLOW
 
 OUTPUT_DIR = PROJECT_ROOT / "docs"
 OUTPUT_FILE = OUTPUT_DIR / "architecture.md"
@@ -89,7 +98,19 @@ def add_dataflow(lines):
             lines.append("↓")
 
     lines.append("```")
-    
+
+
+def add_shortcuts(lines):
+
+    lines.append("\n# Tastenkürzel\n")
+
+    for key, description in SHORTCUTS.items():
+
+        lines.append(
+            f"- {key}: {description}"
+        )
+
+
 def build_markdown():
 
     lines = []
@@ -192,7 +213,7 @@ def add_dataflow(lines):
         lines.append(
             f"Fehler beim Laden des Datenflusses: {ex}"
         )
-        
+
 
 def add_project_structure(lines):
     """
@@ -218,8 +239,8 @@ def add_project_structure(lines):
     )
 
     lines.append("```")
-    
-    
+
+
 def build_tree(
     path,
     lines,
@@ -280,7 +301,8 @@ def build_tree(
                 prefix + extension,
                 ignore_dirs
             )
-                
+
+
 def main():
 
     OUTPUT_DIR.mkdir(
