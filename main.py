@@ -31,7 +31,7 @@ from core.mouth_detector import MouthDetector
 from core.calibration import Calibration
 from core.recorder import Recorder
 from core.ui import UI
-
+from core.training_manager import TrainingManager
 
 def main():
 
@@ -45,8 +45,11 @@ def main():
     calibration = Calibration()
     # UI initialisieren
     ui = UI()
+    ui.create_windows()
     # Recorder initialisieren
     recorder = Recorder()
+    
+    training_manager = TrainingManager()
 
     while True:
 
@@ -114,6 +117,20 @@ def main():
                 ymax
             )
             
+            ui.show_training_sentence(
+                frame,
+                training_manager.get_current_sentence()
+            )          
+            
+            recording_count = (
+                training_manager.get_recording_count()
+            )
+
+            ui.show_recording_count(
+                frame,
+                recording_count
+            )
+            
         if mouth_roi is not None and mouth_roi.size > 0:
             ui.show_lips(mouth_roi)     
             
@@ -121,27 +138,75 @@ def main():
                 mouth_roi
             )
     
+            
+        ui.show_shortcuts(
+            frame
+        )    
+        
         ui.show_main_window(frame)
 
+
+
+
         key = cv2.waitKey(1) & 0xFF
+
+        # Kalibrierung starten
         if key == ord("c"):
+
             calibration.start()
+
             print()
             print("Kalibrierung gestartet")
             print()
-    
+
+
+        # Nächsten Trainingssatz auswählen
+        if key == ord("n"):
+
+            sentence = (
+                training_manager.next_sentence()
+            )
+
+            print()
+            print(
+                f"Trainingssatz: {sentence}"
+            )
+            print()
+
+
+        # Vorherigen Trainingssatz auswählen
+        if key == ord("p"):
+
+            sentence = (
+                training_manager.previous_sentence()
+            )
+
+            print()
+            print(
+                f"Trainingssatz: {sentence}"
+            )
+            print()
+
+
+        # Aufnahme starten / stoppen
         if key == ord("r"):
+
             if not recorder.recording:
-                if mouth_roi is not None and mouth_roi.size > 0:
-                    height, width = mouth_roi.shape[:2]
+
+                if (
+                    mouth_roi is not None
+                    and
+                    mouth_roi.size > 0
+                ):
+
                     recorder.start_recording(
-                        width,
-                        height
+                        training_manager.get_current_sentence()
                     )
 
             else:
 
                 recorder.stop_recording()
+
 
 
 

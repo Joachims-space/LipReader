@@ -15,7 +15,7 @@ Sie erhält lediglich Mundbilder.
 import os
 import cv2
 from datetime import datetime
-
+import re
 
 class Recorder:
 
@@ -26,24 +26,34 @@ class Recorder:
 
     def start_recording(
         self,
-        width,
-        height
+        sentence
     ):
         """
         Startet eine neue Videoaufnahme.
         """
 
+        folder_name = (
+            self.sentence_to_folder_name(
+                sentence
+            )
+        )
+
+        target_folder = os.path.join(
+            "dataset",
+            folder_name
+        )
+
         os.makedirs(
-            "dataset/raw",
+            target_folder,
             exist_ok=True
         )
 
         filename = datetime.now().strftime(
-            "%Y%m%d_%H%M%S.mp4"
+            target_folder
         )
 
         filepath = os.path.join(
-            "dataset/raw",
+            target_folder,
             filename
         )
 
@@ -95,3 +105,71 @@ class Recorder:
         print()
         print("Aufnahme beendet")
         print()
+    
+    def sentence_to_folder_name(
+        self,
+        sentence
+    ):
+        """
+        Erzeugt einen gültigen Ordnernamen
+        aus einem Trainingssatz.
+        """
+
+        folder = sentence.lower()
+
+        folder = folder.replace("ä", "ae")
+        folder = folder.replace("ö", "oe")
+        folder = folder.replace("ü", "ue")
+        folder = folder.replace("ß", "ss")
+
+        folder = folder.replace(" ", "_")
+
+        folder = re.sub(
+            r"[^a-z0-9_]",
+            "",
+            folder
+        )
+
+        return folder    
+    
+    def get_next_filename(
+        self,
+        target_folder
+    ):
+        """
+        Ermittelt die nächste freie Dateinummer.
+        """
+
+        existing = []
+
+        for file in os.listdir(target_folder):
+
+            if (
+                file.startswith("video_")
+                and
+                file.endswith(".mp4")
+            ):
+
+                try:
+
+                    number = int(
+                        file[6:9]
+                    )
+
+                    existing.append(number)
+
+                except ValueError:
+
+                    pass
+
+        if not existing:
+
+            return "video_001.mp4"
+
+        next_number = max(existing) + 1
+
+        return (
+            f"video_{next_number:03d}.mp4"
+        )
+    
+        
