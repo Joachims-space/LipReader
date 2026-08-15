@@ -9,13 +9,14 @@ Verantwortung:
 """
 
 import statistics
+from config.settings import CALIBRATION_FRAMES
 
 
 class Calibration:
 
-    def __init__(self, calibration_frames=300):
+    def __init__(self):
 
-        self.calibration_frames = calibration_frames
+        self.calibration_frames = CALIBRATION_FRAMES
 
         self.width_values = []
         self.height_values = []

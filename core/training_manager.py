@@ -13,7 +13,7 @@ Aufgaben:
 
 import os
 import re
-
+from config.training_sentences import TRAINING_SENTENCES
 
 class TrainingManager:
 
@@ -24,20 +24,7 @@ class TrainingManager:
         # Diese Liste wird später
         # wahrscheinlich noch erweitert.
         #
-        self.sentences = [
-
-            "Bitte Wasser",
-
-            "Bitte Hilfe",
-
-            "Ich habe Schmerzen",
-
-            "Ja",
-
-            "Nein",
-
-            "Danke"
-        ]
+        self.sentences = TRAINING_SENTENCES
 
         # Start mit erstem Satz
 

@@ -187,7 +187,6 @@ Keine Dokumentation vorhanden.
 - show_shortcuts
 - create_windows
 - show_recording_count
-- show_recording_count
 
 
 
@@ -217,7 +216,8 @@ Später:
 ├── config
 │   ├── dataflow.py
 │   ├── settings.py
-│   └── shortcuts.py
+│   ├── shortcuts.py
+│   └── training_sentences.py
 ├── core
 │   ├── calibration.py
 │   ├── camera.py
@@ -228,8 +228,7 @@ Später:
 │   └── ui.py
 ├── dataset
 │   ├── bitte_hilfe
-│   ├── bitte_wasser
-│   └── raw
+│   └── bitte_wasser
 ├── docs
 │   └── architecture.md
 ├── frontend
@@ -250,12 +249,18 @@ Später:
 
 # Trainingssätze
 
-- Bitte Wasser
-- Bitte Hilfe
-- Ich habe Schmerzen
 - Ja
 - Nein
+- Bitte
 - Danke
+- Wasser
+- Hilfe
+- Arzt
+- Schmerzen
+- Mama
+- Papa
+- Kaffee
+- Telefon
 
 # Tastenkürzel
 

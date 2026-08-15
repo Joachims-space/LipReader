@@ -16,6 +16,12 @@ import os
 import cv2
 from datetime import datetime
 import re
+from config.settings import (
+    VIDEO_WIDTH,
+    VIDEO_HEIGHT,
+    VIDEO_FPS
+)
+
 
 class Recorder:
 
@@ -60,8 +66,11 @@ class Recorder:
         self.writer = cv2.VideoWriter(
             filepath,
             cv2.VideoWriter_fourcc(*"mp4v"),
-            20,
-            (128, 128) #(width, height)
+            VIDEO_FPS,
+            (
+            VIDEO_WIDTH,
+            VIDEO_HEIGHT
+            )
         )
 
         self.recording = True
@@ -83,7 +92,10 @@ class Recorder:
 
             resized = cv2.resize(
                 mouth_roi,
-                (128, 128)
+                (
+                    VIDEO_WIDTH,
+                    VIDEO_HEIGHT
+                )
             )
 
             self.writer.write(

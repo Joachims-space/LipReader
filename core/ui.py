@@ -14,6 +14,9 @@ OpenCV-Darstellung.
 
 import cv2
 from config.shortcuts import SHORTCUTS
+from config.settings import (
+    TARGET_RECORDINGS_PER_SENTENCE
+)
 
 class UI:
 
@@ -164,8 +167,8 @@ class UI:
                 (200, 200, 200),
                 2
             )
-            
-            
+
+
     def create_windows(self):
         """
         Erstellt die OpenCV-Fenster.
@@ -200,34 +203,13 @@ class UI:
             cv2.WND_PROP_TOPMOST,
             1
         )            
-        
-        
-    def show_recording_count(
-        self,
-        frame,
-        count
-    ):
-        """
-        Zeigt die Anzahl der bisher
-        vorhandenen Trainingsaufnahmen an.
-        """
 
-        cv2.putText(
-            frame,
-            f"Aufnahmen: {count}",
-            (20, 200),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            0.8,
-            (0, 255, 0),
-            2
-        )        
-        
-        
+
     def show_recording_count(
         self,
         frame,
         count,
-        target_count=20
+        target_count=TARGET_RECORDINGS_PER_SENTENCE
     ):
         """
         Zeigt den Trainingsfortschritt an.
